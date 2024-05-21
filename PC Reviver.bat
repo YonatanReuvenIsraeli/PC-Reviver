@@ -2,7 +2,7 @@
 title PC Reviver
 setlocal
 echo Program Name: PC Reviver
-echo Version: 1.0.0
+echo Version: 1.0.1
 echo Developer: @YonatanReuvenIsraeli
 echo Website: https://www.yonatanreuvenisraeli.dev
 echo License: GNU General Public License v3.0
@@ -92,7 +92,7 @@ goto Done
 
 :Error
 echo.
-echo There has been an error you can try again.
+echo There has been an error! You can try again.
 goto Drive
 
 :Done

@@ -2,7 +2,7 @@
 title PC Reviver
 setlocal
 echo Program Name: PC Reviver
-echo Version: 1.0.1
+echo Version: 1.0.2
 echo Developer: @YonatanReuvenIsraeli
 echo Website: https://www.yonatanreuvenisraeli.dev
 echo License: GNU General Public License v3.0
@@ -97,7 +97,7 @@ goto Drive
 
 :Done
 echo.
-echo Remember to reset user permissions on "Drive\Windows\System32\hal.dll" and change owner to NT Service\TrustedInstaller on "Drive\Windows\System32\hal.dll". Press any key to restart you PC"
+echo Remember to reset user permissions on "Drive\Windows\System32\hal.dll" and change owner to NT Service\TrustedInstaller on "Drive\Windows\System32\hal.dll". Press any key to restart you PC.
 pause > nul 2>&1
 wpeutil reboot
 

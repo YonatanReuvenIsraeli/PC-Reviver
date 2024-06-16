@@ -2,7 +2,7 @@
 title PC Reviver
 setlocal
 echo Program Name: PC Reviver
-echo Version: 1.0.2
+echo Version: 1.0.3
 echo Developer: @YonatanReuvenIsraeli
 echo Website: https://www.yonatanreuvenisraeli.dev
 echo License: GNU General Public License v3.0
@@ -32,7 +32,7 @@ set Kill=
 set /p Kill="This batch file only resuscitates PCs killed by "PC Killer.bat" made by @YonatanReuvenIsraeli. Has your PC been killed by "PC Killer.bat" made by @YonatanReuvenIsraeli? (Yes/No) "
 if /i "%Kill%"=="Yes" goto Drive
 if /i "%Kill%"=="No" goto Close
-echo Invalid Syntax
+echo Invalid syntax
 goto Start
 
 :Drive
@@ -65,7 +65,7 @@ if /i "%Drive%"=="W:" goto SureDrive
 if /i "%Drive%"=="X:" goto SureDrive
 if /i "%Drive%"=="Y:" goto SureDrive
 if /i "%Drive%"=="Z:" goto SureDrive
-echo Invalid Syntax!
+echo Invalid syntax!
 goto Drive
 
 :SureDrive
@@ -74,7 +74,7 @@ set SureDrive=
 set /p SureDrive="Are you sure "%Drive%" is the drive Windows is installed on? (Yes/No) "
 if /i "%SureDrive%"=="Yes" goto CheckExistDrive
 if /i "%SureDrive%"=="No" goto Drive
-echo Invalid Syntax!
+echo Invalid syntax!
 goto SureDriveLetter
 
 :CheckExistDrive

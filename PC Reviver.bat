@@ -2,21 +2,13 @@
 title PC Reviver
 setlocal
 echo Program Name: PC Reviver
-echo Version: 1.0.3
+echo Version: 1.0.4
 echo Developer: @YonatanReuvenIsraeli
 echo Website: https://www.yonatanreuvenisraeli.dev
 echo License: GNU General Public License v3.0
-net session > nul 2>&1
-if not "%errorlevel%"=="0" goto NotAdministrator
 net user > nul 2>&1
 if "%errorlevel%"=="0" goto NotWindowsRecoveryEnvironment
 goto Start
-
-:NotAdministrator
-echo.
-echo Please run this batch file as an administrator. Press any key to close this batch file.
-pause > nul 2>&1
-goto Close
 
 :NotWindowsRecoveryEnvironment
 echo.
@@ -29,7 +21,7 @@ net user > nul 2>&1
 if "%errorlevel%"=="0" goto NotWindowsRecoveryEnvironment
 echo.
 set Kill=
-set /p Kill="This batch file only resuscitates PCs killed by "PC Killer.bat" made by @YonatanReuvenIsraeli. Has your PC been killed by "PC Killer.bat" made by @YonatanReuvenIsraeli? (Yes/No) "
+set /p Kill="This batch file only revives PCs killed by "PC Killer.bat" made by @YonatanReuvenIsraeli. Has your PC been killed by "PC Killer.bat" made by @YonatanReuvenIsraeli? (Yes/No) "
 if /i "%Kill%"=="Yes" goto Drive
 if /i "%Kill%"=="No" goto Close
 echo Invalid syntax

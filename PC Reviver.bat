@@ -2,7 +2,7 @@
 title PC Reviver
 setlocal
 echo Program Name: PC Reviver
-echo Version: 1.0.4
+echo Version: 1.1.0
 echo Developer: @YonatanReuvenIsraeli
 echo Website: https://www.yonatanreuvenisraeli.dev
 echo License: GNU General Public License v3.0
@@ -71,11 +71,16 @@ goto SureDriveLetter
 
 :CheckExistDrive
 if not exist "%Drive%" goto NotExist
+if not exist "%DriveLetterWindows%"\Windows goto NotWindows
 goto Revive
 
 :NotExist
 echo "%Drive%" does not exist. Please try again.
 goto Drive
+
+:NotWindows
+echo Windows not installed on "%DriveLetterWindows%"!
+goto DriveLetterWindows
 
 :Revive
 ren "%Drive%\Windows\System32\hal1.dll" "hal.dll"

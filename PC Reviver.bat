@@ -2,7 +2,7 @@
 title PC Reviver
 setlocal
 echo Program Name: PC Reviver
-echo Version: 1.2.1
+echo Version: 1.2.2
 echo Developer: @YonatanReuvenIsraeli
 echo Website: https://www.yonatanreuvenisraeli.dev
 echo License: GNU General Public License v3.0
@@ -90,7 +90,7 @@ goto "Close"
 :"Revive"
 echo This PC has been killed by by "PC Killer.bat" made by @YonatanReuevnIsraeli.
 echo.
-Reviving this PC.
+echo Reviving this PC.
 ren "%Drive%\Windows\System32\hal1.dll" "hal.dll"
 if not "%errorlevel%"=="0" goto "Error"
 goto "Done"

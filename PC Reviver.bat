@@ -2,7 +2,7 @@
 title PC Reviver
 setlocal
 echo Program Name: PC Reviver
-echo Version: 1.3.0
+echo Version: 1.3.1
 echo Developer: @YonatanReuvenIsraeli
 echo Website: https://www.yonatanreuvenisraeli.dev
 echo License: GNU General Public License v3.0
@@ -100,10 +100,14 @@ echo There has been an error! You can try again.
 goto "Drive"
 
 :"Permissions"
+echo.
+echo Reseting user permissions.
 icacls "%Drive%\Windows\System32\hal.dll" /setowner "NT SERVICE\TrustedInstaller" > nul
 if not "%errorlevel%"=="0" goto "ErrorPermissions"
 icacls "%Drive%\Windows\System32\hal.dll" /reset > nul
 if not "%errorlevel%"=="0" goto "ErrorPermissions"
+echo User permissions reset.
+echo.
 echo PC revived! Press any key to restart you PC.
 endlocal
 pause > nul 2>&1

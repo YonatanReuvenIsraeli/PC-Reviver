@@ -2,7 +2,7 @@
 title PC Reviver
 setlocal
 echo Program Name: PC Reviver
-echo Version: 1.2.0
+echo Version: 1.2.1
 echo Developer: @YonatanReuvenIsraeli
 echo Website: https://www.yonatanreuvenisraeli.dev
 echo License: GNU General Public License v3.0
@@ -69,7 +69,7 @@ goto "SureDrive"
 
 :"CheckExistDrive"
 if not exist "%Drive%" goto "NotExist"
-if not exist "%DriveLetterWindows%"\Windows goto "NotWindows"
+if not exist "%Drive%\Windows" goto "NotWindows"
 goto "CheckKilled"
 
 :"NotExist"
@@ -77,8 +77,8 @@ echo "%Drive%" does not exist. Please try again.
 goto "Drive"
 
 :"NotWindows"
-echo Windows not installed on "%DriveLetterWindows%"!
-goto "DriveLetterWindows"
+echo Windows not installed on "%Drive%"!
+goto "Drive"
 
 :"CheckKilled"
 echo.

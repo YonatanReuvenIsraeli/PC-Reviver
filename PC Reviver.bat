@@ -2,7 +2,7 @@
 title PC Reviver
 setlocal
 echo Program Name: PC Reviver
-echo Version: 1.2.2
+echo Version: 1.3.0
 echo Developer: @YonatanReuvenIsraeli
 echo Website: https://www.yonatanreuvenisraeli.dev
 echo License: GNU General Public License v3.0
@@ -92,18 +92,27 @@ echo This PC has been killed by by "PC Killer.bat" made by @YonatanReuevnIsraeli
 echo.
 echo Reviving this PC.
 ren "%Drive%\Windows\System32\hal1.dll" "hal.dll"
-if not "%errorlevel%"=="0" goto "Error"
-goto "Done"
+if not "%errorlevel%"=="0" goto "ErrorRevive"
+goto "Permissions"
 
-:"Error"
+:"ErrorRevive"
 echo There has been an error! You can try again.
 goto "Drive"
 
-:"Done"
-echo PC revived! Remember to reset user permissions on "%Drive%\Windows\System32\hal.dll" and change owner to NT Service\TrustedInstaller on "%Drive%\Windows\System32\hal.dll". Press any key to restart you PC.
+:"Permissions"
+icacls "%Drive%\Windows\System32\hal.dll" /setowner "NT SERVICE\TrustedInstaller" > nul
+if not "%errorlevel%"=="0" goto "ErrorPermissions"
+icacls "%Drive%\Windows\System32\hal.dll" /reset > nul
+if not "%errorlevel%"=="0" goto "ErrorPermissions"
+echo PC revived! Press any key to restart you PC.
 endlocal
 pause > nul 2>&1
 wpeutil reboot
+
+:"ErrorPermissions"
+echo There has been an error! Press any key to try again.
+pause > nul 2>&1
+goto "Permissions"
 
 :"Close"
 endlocal

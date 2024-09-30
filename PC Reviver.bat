@@ -2,7 +2,7 @@
 title PC Reviver
 setlocal
 echo Program Name: PC Reviver
-echo Version: 1.1.4
+echo Version: 1.2.0
 echo Developer: @YonatanReuvenIsraeli
 echo Website: https://www.yonatanreuvenisraeli.dev
 echo License: GNU General Public License v3.0
@@ -70,7 +70,7 @@ goto "SureDrive"
 :"CheckExistDrive"
 if not exist "%Drive%" goto "NotExist"
 if not exist "%DriveLetterWindows%"\Windows goto "NotWindows"
-goto "Revive"
+goto "CheckKilled"
 
 :"NotExist"
 echo "%Drive%" does not exist. Please try again.
@@ -80,7 +80,15 @@ goto "Drive"
 echo Windows not installed on "%DriveLetterWindows%"!
 goto "DriveLetterWindows"
 
+:"CheckKilled"
+echo.
+echo Checking if this PC has been killed by by "PC Killer.bat" made by @YonatanReuevnIsraeli.
+if exist "%Drive%\Windows\System32\hal1.dll" goto "Revive"
+echo This PC has not been killed by by "PC Killer.bat" made by @YonatanReuevnIsraeli. Press any key to close this batch file.
+goto "Close"
+
 :"Revive"
+echo This PC has been killed by by "PC Killer.bat" made by @YonatanReuevnIsraeli.
 echo.
 Reviving this PC.
 ren "%Drive%\Windows\System32\hal1.dll" "hal.dll"
@@ -92,7 +100,6 @@ echo There has been an error! You can try again.
 goto "Drive"
 
 :"Done"
-echo.
 echo PC revived! Remember to reset user permissions on "%Drive%\Windows\System32\hal.dll" and change owner to NT Service\TrustedInstaller on "%Drive%\Windows\System32\hal.dll". Press any key to restart you PC.
 endlocal
 pause > nul 2>&1

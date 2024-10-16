@@ -2,7 +2,7 @@
 title PC Reviver
 setlocal
 echo Program Name: PC Reviver
-echo Version: 1.3.2
+echo Version: 1.3.3
 echo Developer: @YonatanReuvenIsraeli
 echo Website: https://www.yonatanreuvenisraeli.dev
 echo License: GNU General Public License v3.0
@@ -12,7 +12,7 @@ goto "Start"
 
 :"NotWindowsRecoveryEnvironment"
 echo.
-echo You are not Windows Recovery Environment! You must run this option from in Windows Recovery Environment. Press any key to close this batch file.
+echo You are not Windows Recovery Environment! You must run this batch file in Windows Recovery Environment. Press any key to close this batch file.
 pause > nul 2>&1
 goto "Close"
 

@@ -2,12 +2,12 @@
 title PC Reviver
 setlocal
 echo Program Name: PC Reviver
-echo Version: 1.3.3
+echo Version: 1.4.0
 echo Developer: @YonatanReuvenIsraeli
 echo Website: https://www.yonatanreuvenisraeli.dev
 echo License: GNU General Public License v3.0
 net user > nul 2>&1
-if "%errorlevel%"=="0" goto "NotWindowsRecoveryEnvironment"
+rem if "%errorlevel%"=="0" goto "NotWindowsRecoveryEnvironment"
 goto "Start"
 
 :"NotWindowsRecoveryEnvironment"
@@ -20,78 +20,204 @@ goto "Close"
 echo.
 set Kill=
 set /p Kill="This batch file only revives PCs killed by "PC Killer.bat" made by @YonatanReuvenIsraeli. Has your PC been killed by "PC Killer.bat" made by @YonatanReuvenIsraeli? (Yes/No) "
-if /i "%Kill%"=="Yes" goto "Drive"
+if /i "%Kill%"=="Yes" goto "Volume1"
 if /i "%Kill%"=="No" goto "Close"
 echo Invalid syntax
 goto "Start"
 
-:"Drive"
+:"Volume1"
+if exist "%cd%DiskPart.txt" goto "DiskPartExistVolume1"
 echo.
-set Drive=
-set /p Drive="What drive is Windows installed on? (A:-Z:) "
-if /i "%Drive%"=="A:" goto "SureDrive"
-if /i "%Drive%"=="B:" goto "SureDrive"
-if /i "%Drive%"=="C:" goto "SureDrive"
-if /i "%Drive%"=="D:" goto "SureDrive"
-if /i "%Drive%"=="E:" goto "SureDrive"
-if /i "%Drive%"=="F:" goto "SureDrive"
-if /i "%Drive%"=="G:" goto "SureDrive"
-if /i "%Drive%"=="H:" goto "SureDrive"
-if /i "%Drive%"=="I:" goto "SureDrive"
-if /i "%Drive%"=="J:" goto "SureDrive"
-if /i "%Drive%"=="K:" goto "SureDrive"
-if /i "%Drive%"=="L:" goto "SureDrive"
-if /i "%Drive%"=="M:" goto "SureDrive"
-if /i "%Drive%"=="N:" goto "SureDrive"
-if /i "%Drive%"=="O:" goto "SureDrive"
-if /i "%Drive%"=="P:" goto "SureDrive"
-if /i "%Drive%"=="Q:" goto "SureDrive"
-if /i "%Drive%"=="R:" goto "SureDrive"
-if /i "%Drive%"=="S:" goto "SureDrive"
-if /i "%Drive%"=="T:" goto "SureDrive"
-if /i "%Drive%"=="U:" goto "SureDrive"
-if /i "%Drive%"=="V:" goto "SureDrive"
-if /i "%Drive%"=="W:" goto "SureDrive"
-if /i "%Drive%"=="X:" goto "SureDrive"
-if /i "%Drive%"=="Y:" goto "SureDrive"
-if /i "%Drive%"=="Z:" goto "SureDrive"
-echo Invalid syntax!
-goto "Drive"
+echo Listing volumes attached to this PC.
+(echo list vol) > "%cd%DiskPart.txt"
+(echo exit) >> "%cd%DiskPart.txt"
+DiskPart /s "%cd%DiskPart.txt" 2>&1
+if not "%errorlevel%"=="0" goto "Volume1Error"
+del "%cd%DiskPart.txt" /f /q > nul 2>&1
+echo Volumes attached to this PC listed.
+goto "WindowsAsk1"
 
-:"SureDrive"
+:"DiskPartExistVolume1"
+set DiskPart=True
 echo.
-set SureDrive=
-set /p SureDrive="Are you sure "%Drive%" is the drive Windows is installed on? (Yes/No) "
-if /i "%SureDrive%"=="Yes" goto "CheckExistDrive"
-if /i "%SureDrive%"=="No" goto "Drive"
-echo Invalid syntax!
-goto "SureDrive"
+echo Please temporary rename to something else or temporary move to another location "%cd%DiskPart.txt" in order for this batch file to proceed. Press any key to continue when "%cd%DiskPart.txt" is renamed to something else or moved to another location. This batch file will let you know when you can rename it back to its original name or move it back to its original location.
+pause > nul 2>&1
+goto "Volume1"
 
-:"CheckExistDrive"
-if not exist "%Drive%" goto "NotExist"
-if not exist "%Drive%\Windows" goto "NotWindows"
+:"Volume1Error"
+del "%cd%DiskPart.txt" /f /q > nul 2>&1
+echo.
+echo There has been an error! Press any key to try again.
+pause > nul 2>&1
+goto "Volume1"
+
+:"WindowsAsk1"
+echo.
+set WindowsVolume=
+set /p WindowsVolume="What volume is the Windows volume? (0-?) "
+goto "SureWindowsAsk1"
+
+:"SureWindowsAsk1"
+echo.
+set SureWindowsAsk1=
+set /p SureWindowsAsk1="Are you sure volume %WindowsVolume% is the Windows volume? (Yes/No) "
+if /i "%SureWindowsAsk1%"=="Yes" goto "WindowsAsk2"
+if /i "%SureWindowsAsk1%"=="No" goto "Volume1"
+echo Invalid syntax!
+goto "SureWindowsAsk1"
+
+:"WindowsAsk2"
+echo.
+set WindowsAsk=
+set /p WindowsAsk="Is the Windows volume %WindowsVolume% already assigned a drive letter? (Yes/No) "
+if /i "%WindowsAsk%"=="Yes" goto "SureWindowsAsk2"
+if /i "%WindowsAsk%"=="No" goto "WindowsDriveLetter"
+echo Invalid syntax!
+goto "WindowsAsk2"
+
+:"SureWindowsAsk2"
+echo.
+set SureWindowsAsk2=
+set /p SureWindowsAsk2="Are you sure Windows volume %WindowsVolume% is already assigned a drive letter? (Yes/No) "
+if /i "%SureWindowsAsk2%"=="Yes" goto "DriveLetterWindows"
+if /i "%SureWindowsAsk2%"=="No" goto "WindowsAsk2"
+echo Invalid syntax!
+goto "SureWindowsAsk2"
+
+:"WindowsDriveLetter"
+echo.
+set WindowsDriveLetter=
+set /p WindowsDriveLetter="Enter an unused drive letter. (A:-Z:) "
+if exist "%WindowsDriveLetter%" goto "WindowsDriveLetterExist"
+if /i "%WindowsDriveLetter%"=="A:" goto "AssignDriveLetterWindows"
+if /i "%WindowsDriveLetter%"=="B:" goto "AssignDriveLetterWindows"
+if /i "%WindowsDriveLetter%"=="C:" goto "AssignDriveLetterWindows"
+if /i "%WindowsDriveLetter%"=="D:" goto "AssignDriveLetterWindows"
+if /i "%WindowsDriveLetter%"=="E:" goto "AssignDriveLetterWindows"
+if /i "%WindowsDriveLetter%"=="F:" goto "AssignDriveLetterWindows"
+if /i "%WindowsDriveLetter%"=="G:" goto "AssignDriveLetterWindows"
+if /i "%WindowsDriveLetter%"=="H:" goto "AssignDriveLetterWindows"
+if /i "%WindowsDriveLetter%"=="I:" goto "AssignDriveLetterWindows"
+if /i "%WindowsDriveLetter%"=="J:" goto "AssignDriveLetterWindows"
+if /i "%WindowsDriveLetter%"=="K:" goto "AssignDriveLetterWindows"
+if /i "%WindowsDriveLetter%"=="L:" goto "AssignDriveLetterWindows"
+if /i "%WindowsDriveLetter%"=="M:" goto "AssignDriveLetterWindows"
+if /i "%WindowsDriveLetter%"=="N:" goto "AssignDriveLetterWindows"
+if /i "%WindowsDriveLetter%"=="O:" goto "AssignDriveLetterWindows"
+if /i "%WindowsDriveLetter%"=="P:" goto "AssignDriveLetterWindows"
+if /i "%WindowsDriveLetter%"=="Q:" goto "AssignDriveLetterWindows"
+if /i "%WindowsDriveLetter%"=="R:" goto "AssignDriveLetterWindows"
+if /i "%WindowsDriveLetter%"=="S:" goto "AssignDriveLetterWindows"
+if /i "%WindowsDriveLetter%"=="T:" goto "AssignDriveLetterWindows"
+if /i "%WindowsDriveLetter%"=="U:" goto "AssignDriveLetterWindows"
+if /i "%WindowsDriveLetter%"=="V:" goto "AssignDriveLetterWindows"
+if /i "%WindowsDriveLetter%"=="W:" goto "AssignDriveLetterWindows"
+if /i "%WindowsDriveLetter%"=="X:" goto "AssignDriveLetterWindows"
+if /i "%WindowsDriveLetter%"=="Y:" goto "AssignDriveLetterWindows"
+if /i "%WindowsDriveLetter%"=="Z:" goto "AssignDriveLetterWindows"
+echo Invalid syntax!
+goto "WindowsDriveLetter"
+
+:"WindowsDriveLetterExist"
+echo "%WindowsDriveLetter%" exists! Please try again.
+goto "WindowsDriveLetter"
+
+:"AssignDriveLetterWindows"
+if exist "%cd%DiskPart.txt" goto "DiskPartExistAssignDriveLetterWindows"
+echo.
+echo Assigning Windows volume %WindowsVolume% drive letter "%WindowsDriveLetter%".
+(echo sel vol %WindowsVolume%) > "%cd%DiskPart.txt"
+(echo assign letter=%WindowsDriveLetter%) >> "%cd%DiskPart.txt"
+(echo exit) >> "%cd%DiskPart.txt"
+DiskPart /s "%cd%DiskPart.txt" > nul 2>&1
+if not "%errorlevel%"=="0" goto "AssignDriveLetterWindowsError"
+del "%cd%DiskPart.txt" /f /q > nul 2>&1
+echo Assigned Windows volume %WindowsVolume% drive letter "%WindowsDriveLetter%".
+set DriveLetterWindows=%WindowsDriveLetter%
 goto "CheckKilled"
 
-:"NotExist"
-echo "%Drive%" does not exist. Please try again.
-goto "Drive"
+:"DiskPartExistAssignDriveLetterWindows"
+set DiskPart=True
+echo.
+echo Please temporary rename to something else or temporary move to another location "%cd%DiskPart.txt" in order for this batch file to proceed. Press any key to continue when "%cd%DiskPart.txt" is renamed to something else or moved to another location. This batch file will let you know when you can rename it back to its original name or move it back to its original location.
+pause > nul 2>&1
+goto "AssignDriveLetterWindows"
+
+:"AssignDriveLetterWindowsError"
+del "%cd%DiskPart.txt" /f /q > nul 2>&1
+echo There has been an error! Press any key to try again.
+pause > nul 2>&1
+goto "WindowsDriveLetter"
+
+:"DriveLetterWindows"
+echo.
+set DriveLetterWindows=
+set /p DriveLetterWindows="What is the drive letter that Windows is installed on? (A:-Z:) "
+if /i "%DriveLetterWindows%"=="A:" goto "SureDriveLetterWindows"
+if /i "%DriveLetterWindows%"=="B:" goto "SureDriveLetterWindows"
+if /i "%DriveLetterWindows%"=="C:" goto "SureDriveLetterWindows"
+if /i "%DriveLetterWindows%"=="D:" goto "SureDriveLetterWindows"
+if /i "%DriveLetterWindows%"=="E:" goto "SureDriveLetterWindows"
+if /i "%DriveLetterWindows%"=="F:" goto "SureDriveLetterWindows"
+if /i "%DriveLetterWindows%"=="G:" goto "SureDriveLetterWindows"
+if /i "%DriveLetterWindows%"=="H:" goto "SureDriveLetterWindows"
+if /i "%DriveLetterWindows%"=="I:" goto "SureDriveLetterWindows"
+if /i "%DriveLetterWindows%"=="J:" goto "SureDriveLetterWindows"
+if /i "%DriveLetterWindows%"=="K:" goto "SureDriveLetterWindows"
+if /i "%DriveLetterWindows%"=="L:" goto "SureDriveLetterWindows"
+if /i "%DriveLetterWindows%"=="M:" goto "SureDriveLetterWindows"
+if /i "%DriveLetterWindows%"=="N:" goto "SureDriveLetterWindows"
+if /i "%DriveLetterWindows%"=="O:" goto "SureDriveLetterWindows"
+if /i "%DriveLetterWindows%"=="P:" goto "SureDriveLetterWindows"
+if /i "%DriveLetterWindows%"=="Q:" goto "SureDriveLetterWindows"
+if /i "%DriveLetterWindows%"=="R:" goto "SureDriveLetterWindows"
+if /i "%DriveLetterWindows%"=="S:" goto "SureDriveLetterWindows"
+if /i "%DriveLetterWindows%"=="T:" goto "SureDriveLetterWindows"
+if /i "%DriveLetterWindows%"=="U:" goto "SureDriveLetterWindows"
+if /i "%DriveLetterWindows%"=="V:" goto "SureDriveLetterWindows"
+if /i "%DriveLetterWindows%"=="W:" goto "SureDriveLetterWindows"
+if /i "%DriveLetterWindows%"=="X:" goto "SureDriveLetterWindows"
+if /i "%DriveLetterWindows%"=="Y:" goto "SureDriveLetterWindows"
+if /i "%DriveLetterWindows%"=="Z:" goto "SureDriveLetterWindows"
+echo Invalid syntax!
+goto "DriveLetterWindows"
+
+:"SureDriveLetterWindows"
+echo.
+set SureDriveLetterWindows=
+set /p SureDriveLetterWindows="Are you sure "%DriveLetterWindows%" is the drive letter that Windows is installed on? (Yes/No) "
+if /i "%SureDriveLetterWindows%"=="Yes" goto "CheckExistDriveLetterWindows"
+if /i "%SureDriveLetterWindows%"=="No" goto "DriveLetterWindows"
+echo Invalid syntax!
+goto "SureDriveLetterWindows"
+
+:"CheckExistDriveLetterWindows"
+if not exist "%DriveLetterWindows%" goto "DriveLetterWindowsNotExist"
+if not exist "%DriveLetterWindows%"\Windows goto "NotWindows"
+goto "CheckKilled"
+
+:"DriveLetterWindowsNotExist"
+echo "%DriveLetterWindows%" does not exist! Please try again.
+goto "DriveLetterWindows"
 
 :"NotWindows"
-echo Windows not installed on "%Drive%"!
-goto "Drive"
+echo Windows not installed on "%DriveLetterWindows%"!
+goto DriveLetterWindows
+goto "Volume1"
 
 :"CheckKilled"
 echo.
 echo Checking if this PC has been killed by by "PC Killer.bat" made by @YonatanReuevnIsraeli.
-if exist "%Drive%\Windows\System32\hal1.dll" goto "Revive"
+if exist "%WindowsDriveLetter%\Windows\System32\hal1.dll" goto "Revive"
 echo This PC has not been killed by by "PC Killer.bat" made by @YonatanReuevnIsraeli. Press any key to close this batch file.
+pause > nul 2>&1
 goto "Close"
 
 :"Revive"
 echo This PC has been killed by by "PC Killer.bat" made by @YonatanReuevnIsraeli.
 echo.
 echo Reviving this PC.
-ren "%Drive%\Windows\System32\hal1.dll" "hal.dll"
+ren "%WindowsDriveLetter%\Windows\System32\hal1.dll" "hal.dll"
 if not "%errorlevel%"=="0" goto "ErrorRevive"
 goto "Permissions"
 
@@ -102,9 +228,9 @@ goto "Drive"
 :"Permissions"
 echo.
 echo Reseting user permissions.
-icacls "%Drive%\Windows\System32\hal.dll" /setowner "NT SERVICE\TrustedInstaller" > nul 2>&1
+icacls "%WindowsDriveLetter%\Windows\System32\hal.dll" /setowner "NT SERVICE\TrustedInstaller" > nul 2>&1
 if not "%errorlevel%"=="0" goto "ErrorPermissions"
-icacls "%Drive%\Windows\System32\hal.dll" /reset > nul 2>&1
+icacls "%WindowsDriveLetter%\Windows\System32\hal.dll" /reset > nul 2>&1
 if not "%errorlevel%"=="0" goto "ErrorPermissions"
 echo User permissions reset.
 echo.

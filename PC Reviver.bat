@@ -2,7 +2,7 @@
 title PC Reviver
 setlocal
 echo Program Name: PC Reviver
-echo Version: 1.4.1
+echo Version: 1.4.2
 echo Developer: @YonatanReuvenIsraeli
 echo Website: https://www.yonatanreuvenisraeli.dev
 echo License: GNU General Public License v3.0
@@ -217,7 +217,7 @@ goto "Close"
 echo This PC has been killed by by "PC Killer.bat" made by @YonatanReuevnIsraeli.
 echo.
 echo Reviving this PC.
-ren "%WindowsDriveLetter%\Windows\System32\hal1.dll" "hal.dll"
+ren "%DriveLetterWindows%\Windows\System32\hal1.dll" "hal.dll"
 if not "%errorlevel%"=="0" goto "ErrorRevive"
 goto "Permissions"
 
@@ -228,9 +228,9 @@ goto "Drive"
 :"Permissions"
 echo.
 echo Reseting user permissions.
-icacls "%WindowsDriveLetter%\Windows\System32\hal.dll" /setowner "NT SERVICE\TrustedInstaller" > nul 2>&1
+icacls "%DriveLetterWindows%\Windows\System32\hal.dll" /setowner "NT SERVICE\TrustedInstaller" > nul 2>&1
 if not "%errorlevel%"=="0" goto "ErrorPermissions"
-icacls "%WindowsDriveLetter%\Windows\System32\hal.dll" /reset > nul 2>&1
+icacls "%DriveLetterWindows%\Windows\System32\hal.dll" /reset > nul 2>&1
 if not "%errorlevel%"=="0" goto "ErrorPermissions"
 echo User permissions reset.
 echo.

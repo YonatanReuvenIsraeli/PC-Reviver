@@ -2,10 +2,11 @@
 title PC Reviver
 setlocal
 echo Program Name: PC Reviver
-echo Version: 1.4.3
-echo Developer: @YonatanReuvenIsraeli
-echo Website: https://www.yonatanreuvenisraeli.dev
+echo Version: 1.4.4
 echo License: GNU General Public License v3.0
+echo Developer: @YonatanReuvenIsraeli
+echo GitHub: https://github.com/YonatanReuvenIsraeli
+echo Sponsor: https://github.com/sponsors/YonatanReuvenIsraeli 
 net user > nul 2>&1
 rem if "%errorlevel%"=="0" goto "NotWindowsRecoveryEnvironment"
 goto "Start"

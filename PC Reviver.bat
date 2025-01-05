@@ -2,13 +2,13 @@
 title PC Reviver
 setlocal
 echo Program Name: PC Reviver
-echo Version: 1.4.4
+echo Version: 1.4.5
 echo License: GNU General Public License v3.0
 echo Developer: @YonatanReuvenIsraeli
 echo GitHub: https://github.com/YonatanReuvenIsraeli
-echo Sponsor: https://github.com/sponsors/YonatanReuvenIsraeli 
-net user > nul 2>&1
-rem if "%errorlevel%"=="0" goto "NotWindowsRecoveryEnvironment"
+echo Sponsor: https://github.com/sponsors/YonatanReuvenIsraeli
+"%windir%\System32\net.exe" user > nul 2>&1
+if "%errorlevel%"=="0" goto "NotWindowsRecoveryEnvironment"
 goto "Start"
 
 :"NotWindowsRecoveryEnvironment"
@@ -32,7 +32,7 @@ echo.
 echo Listing volumes attached to this PC.
 (echo list vol) > "%cd%DiskPart.txt"
 (echo exit) >> "%cd%DiskPart.txt"
-DiskPart /s "%cd%DiskPart.txt" 2>&1
+"%windir%\System32\diskpart.exe" /s "%cd%DiskPart.txt" 2>&1
 if not "%errorlevel%"=="0" goto "VolumeError"
 del "%cd%DiskPart.txt" /f /q > nul 2>&1
 echo Volumes attached to this PC listed.
@@ -130,7 +130,7 @@ echo Assigning Windows volume %WindowsVolume% drive letter "%WindowsDriveLetter%
 (echo sel vol %WindowsVolume%) > "%cd%DiskPart.txt"
 (echo assign letter=%WindowsDriveLetter%) >> "%cd%DiskPart.txt"
 (echo exit) >> "%cd%DiskPart.txt"
-DiskPart /s "%cd%DiskPart.txt" > nul 2>&1
+"%windir%\System32\diskpart.exe" /s "%cd%DiskPart.txt" > nul 2>&1
 if not "%errorlevel%"=="0" goto "AssignDriveLetterWindowsError"
 del "%cd%DiskPart.txt" /f /q > nul 2>&1
 echo Assigned Windows volume %WindowsVolume% drive letter "%WindowsDriveLetter%".
@@ -229,16 +229,16 @@ goto "Drive"
 :"Permissions"
 echo.
 echo Reseting user permissions.
-icacls "%DriveLetterWindows%\Windows\System32\hal.dll" /setowner "NT SERVICE\TrustedInstaller" > nul 2>&1
+"%windir%\System32\icacls.exe" "%DriveLetterWindows%\Windows\System32\hal.dll" /setowner "NT SERVICE\TrustedInstaller" > nul 2>&1
 if not "%errorlevel%"=="0" goto "ErrorPermissions"
-icacls "%DriveLetterWindows%\Windows\System32\hal.dll" /reset > nul 2>&1
+"%windir%\System32\icacls.exe" "%DriveLetterWindows%\Windows\System32\hal.dll" /reset > nul 2>&1
 if not "%errorlevel%"=="0" goto "ErrorPermissions"
 echo User permissions reset.
 echo.
 echo PC revived! Press any key to restart you PC.
 endlocal
 pause > nul 2>&1
-wpeutil reboot
+"%windir%\System32\wpeutil.exe" Reboot
 
 :"ErrorPermissions"
 echo There has been an error! Press any key to try again.

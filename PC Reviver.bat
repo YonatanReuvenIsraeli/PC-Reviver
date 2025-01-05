@@ -2,7 +2,7 @@
 title PC Reviver
 setlocal
 echo Program Name: PC Reviver
-echo Version: 1.4.5
+echo Version: 1.4.6
 echo License: GNU General Public License v3.0
 echo Developer: @YonatanReuvenIsraeli
 echo GitHub: https://github.com/YonatanReuvenIsraeli
@@ -27,26 +27,26 @@ echo Invalid syntax
 goto "Start"
 
 :"Volume"
-if exist "%cd%DiskPart.txt" goto "DiskPartExistVolume"
+if exist "%cd%diskpart.txt" goto "DiskPartExistVolume"
 echo.
 echo Listing volumes attached to this PC.
-(echo list vol) > "%cd%DiskPart.txt"
-(echo exit) >> "%cd%DiskPart.txt"
-"%windir%\System32\diskpart.exe" /s "%cd%DiskPart.txt" 2>&1
+(echo list vol) > "%cd%diskpart.txt"
+(echo exit) >> "%cd%diskpart.txt"
+"%windir%\System32\diskpart.exe" /s "%cd%diskpart.txt" 2>&1
 if not "%errorlevel%"=="0" goto "VolumeError"
-del "%cd%DiskPart.txt" /f /q > nul 2>&1
+del "%cd%diskpart.txt" /f /q > nul 2>&1
 echo Volumes attached to this PC listed.
 goto "WindowsAsk1"
 
 :"DiskPartExistVolume"
 set DiskPart=True
 echo.
-echo Please temporary rename to something else or temporary move to another location "%cd%DiskPart.txt" in order for this batch file to proceed. Press any key to continue when "%cd%DiskPart.txt" is renamed to something else or moved to another location. This batch file will let you know when you can rename it back to its original name or move it back to its original location.
+echo Please temporary rename to something else or temporary move to another location "%cd%diskpart.txt" in order for this batch file to proceed. Press any key to continue when "%cd%diskpart.txt" is renamed to something else or moved to another location. This batch file will let you know when you can rename it back to its original name or move it back to its original location.
 pause > nul 2>&1
 goto "Volume"
 
 :"VolumeError"
-del "%cd%DiskPart.txt" /f /q > nul 2>&1
+del "%cd%diskpart.txt" /f /q > nul 2>&1
 echo.
 echo There has been an error! Press any key to try again.
 pause > nul 2>&1
@@ -124,15 +124,15 @@ echo "%WindowsDriveLetter%" exists! Please try again.
 goto "WindowsDriveLetter"
 
 :"AssignDriveLetterWindows"
-if exist "%cd%DiskPart.txt" goto "DiskPartExistAssignDriveLetterWindows"
+if exist "%cd%diskpart.txt" goto "DiskPartExistAssignDriveLetterWindows"
 echo.
 echo Assigning Windows volume %WindowsVolume% drive letter "%WindowsDriveLetter%".
-(echo sel vol %WindowsVolume%) > "%cd%DiskPart.txt"
-(echo assign letter=%WindowsDriveLetter%) >> "%cd%DiskPart.txt"
-(echo exit) >> "%cd%DiskPart.txt"
-"%windir%\System32\diskpart.exe" /s "%cd%DiskPart.txt" > nul 2>&1
+(echo sel vol %WindowsVolume%) > "%cd%diskpart.txt"
+(echo assign letter=%WindowsDriveLetter%) >> "%cd%diskpart.txt"
+(echo exit) >> "%cd%diskpart.txt"
+"%windir%\System32\diskpart.exe" /s "%cd%diskpart.txt" > nul 2>&1
 if not "%errorlevel%"=="0" goto "AssignDriveLetterWindowsError"
-del "%cd%DiskPart.txt" /f /q > nul 2>&1
+del "%cd%diskpart.txt" /f /q > nul 2>&1
 echo Assigned Windows volume %WindowsVolume% drive letter "%WindowsDriveLetter%".
 set DriveLetterWindows=%WindowsDriveLetter%
 goto "CheckKilled"
@@ -140,12 +140,12 @@ goto "CheckKilled"
 :"DiskPartExistAssignDriveLetterWindows"
 set DiskPart=True
 echo.
-echo Please temporary rename to something else or temporary move to another location "%cd%DiskPart.txt" in order for this batch file to proceed. Press any key to continue when "%cd%DiskPart.txt" is renamed to something else or moved to another location. This batch file will let you know when you can rename it back to its original name or move it back to its original location.
+echo Please temporary rename to something else or temporary move to another location "%cd%diskpart.txt" in order for this batch file to proceed. Press any key to continue when "%cd%diskpart.txt" is renamed to something else or moved to another location. This batch file will let you know when you can rename it back to its original name or move it back to its original location.
 pause > nul 2>&1
 goto "AssignDriveLetterWindows"
 
 :"AssignDriveLetterWindowsError"
-del "%cd%DiskPart.txt" /f /q > nul 2>&1
+del "%cd%diskpart.txt" /f /q > nul 2>&1
 echo There has been an error! Press any key to try again.
 pause > nul 2>&1
 goto "WindowsDriveLetter"

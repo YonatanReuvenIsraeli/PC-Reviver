@@ -2,18 +2,18 @@
 title PC Reviver
 setlocal
 echo Program Name: PC Reviver
-echo Version: 1.4.6
+echo Version: 1.4.7
 echo License: GNU General Public License v3.0
 echo Developer: @YonatanReuvenIsraeli
 echo GitHub: https://github.com/YonatanReuvenIsraeli
 echo Sponsor: https://github.com/sponsors/YonatanReuvenIsraeli
 "%windir%\System32\net.exe" user > nul 2>&1
-if "%errorlevel%"=="0" goto "NotWindowsRecoveryEnvironment"
+if "%errorlevel%"=="0" goto "NotInWindowsPreinstallationEnvironmentWindowsRecoveryEnvironment"
 goto "Start"
 
-:"NotWindowsRecoveryEnvironment"
+:"NotInWindowsPreinstallationEnvironmentWindowsRecoveryEnvironment"
 echo.
-echo You are not Windows Recovery Environment! You must run this batch file in Windows Recovery Environment. Press any key to close this batch file.
+echo You are not in Windows Preinstallation Environment or Windows Recovery Environment! You must run this batch file in Windows Preinstallation Environment or Windows Recovery Environment. Press any key to close this batch file.
 pause > nul 2>&1
 goto "Close"
 

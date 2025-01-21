@@ -2,7 +2,7 @@
 title PC Reviver
 setlocal
 echo Program Name: PC Reviver
-echo Version: 1.4.15
+echo Version: 1.4.16
 echo License: GNU General Public License v3.0
 echo Developer: @YonatanReuvenIsraeli
 echo GitHub: https://github.com/YonatanReuvenIsraeli
@@ -199,11 +199,11 @@ goto "CheckKilled"
 
 :"DriveLetterWindowsNotExist"
 echo "%DriveLetterWindows%" does not exist! Please try again.
-goto "DriveLetterWindows"
+goto "Volume"
 
 :"NotWindows"
 echo Windows not installed on "%DriveLetterWindows%"!
-goto "DriveLetterWindows"
+goto "Volume"
 
 :"CheckKilled"
 echo.

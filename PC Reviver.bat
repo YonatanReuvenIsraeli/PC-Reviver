@@ -2,7 +2,7 @@
 title PC Reviver
 setlocal
 echo Program Name: PC Reviver
-echo Version: 1.4.23
+echo Version: 1.4.24
 echo License: GNU General Public License v3.0
 echo Developer: @YonatanReuvenIsraeli
 echo GitHub: https://github.com/YonatanReuvenIsraeli
@@ -235,7 +235,7 @@ if not "%errorlevel%"=="0" goto "ErrorPermissions"
 echo User permissions reset.
 endlocal
 echo.
-echo PC revived! Please save everything you want before rebooting this PC! Press any key to continue when you have saved everything you want.
+echo PC revived! Please save everything you want before restarting this PC! Press any key to restart this PC.
 pause > nul 2>&1
 "%windir%\System32\wpeutil.exe" Reboot
 

@@ -2,7 +2,7 @@
 title PC Reviver
 setlocal
 echo Program Name: PC Reviver
-echo Version: 2.0.3
+echo Version: 2.0.4
 echo License: GNU General Public License v3.0
 echo Developer: @YonatanReuvenIsraeli
 echo GitHub: https://github.com/YonatanReuvenIsraeli
@@ -177,6 +177,7 @@ goto "WindowsDriveLetter"
 
 :"CheckExistWindowsAssign"
 if not exist "%DriveLetterWindows%\Windows" goto "NotWindowsAssign"
+if /i "%DiskPart%"=="True" goto "DiskPartDone"
 goto "CheckKilled"
 
 :"NotWindowsAssign"
@@ -203,6 +204,12 @@ del "diskpart.txt" /f /q > nul 2>&1
 echo There has been an error! Press any key to try again.
 pause > nul 2>&1
 goto "NotWindowsAssign"
+
+:"DiskPartDone"
+echo.
+echo You can now rename or move back the file back to "diskpart.txt". Press any key to continue.
+pause > nul 2>&1
+goto "CheckKilled"
 
 :"DriveLetterWindows"
 echo.

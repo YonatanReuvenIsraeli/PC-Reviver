@@ -2,7 +2,7 @@
 title PC Reviver
 setlocal
 echo Program Name: PC Reviver
-echo Version: 2.0.5
+echo Version: 2.1.0
 echo License: GNU General Public License v3.0
 echo Developer: @YonatanReuvenIsraeli
 echo GitHub: https://github.com/YonatanReuvenIsraeli
@@ -270,9 +270,8 @@ goto "Volume"
 echo.
 echo Checking if Windows installation "%DriveLetterWindows%" has been killed by "PC Killer.bat" made by @YonatanReuevenIsraeli.
 if exist "%DriveLetterWindows%\Windows\System32\hal" goto "Revive"
-echo Windows installation "%DriveLetterWindows%" has not been killed by "PC Killer.bat" made by @YonatanReuevenIsraeli. Press any key to close this batch file.
-pause > nul 2>&1
-goto "Close"
+echo Windows installation "%DriveLetterWindows%" has not been killed by "PC Killer.bat" made by @YonatanReuevenIsraeli.
+goto "Done"
 
 :"Revive"
 echo Windows installation "%DriveLetterWindows%" has been killed by "PC Killer.bat" made by @YonatanReuevenIsraeli.
@@ -283,8 +282,9 @@ if not "%errorlevel%"=="0" goto "ErrorRevive"
 goto "Permissions"
 
 :"ErrorRevive"
-echo There has been an error! You can try again.
-goto "Drive"
+echo There has been an error! Press any key to try again.
+pause > nul 2>&1
+goto "Revive"
 
 :"Permissions"
 echo.
@@ -294,17 +294,35 @@ if not "%errorlevel%"=="0" goto "ErrorPermissions"
 "%windir%\System32\icacls.exe" "%DriveLetterWindows%\Windows\System32\hal.dll" /reset > nul 2>&1
 if not "%errorlevel%"=="0" goto "ErrorPermissions"
 echo User permissions reset.
-endlocal
 echo.
-echo PC revived! Please save everything you want before restarting this PC! Press any key to restart this PC.
-pause > nul 2>&1
-"%windir%\System32\wpeutil.exe" Reboot
+echo PC revived!
+goto "Done"
 
 :"ErrorPermissions"
 echo There has been an error! Press any key to try again.
 pause > nul 2>&1
 goto "Permissions"
 
-:"Close"
+:"Done"
+echo.
+echo [1] Exit.
+echo [2] Reboot.
+echo.
+set Input=
+set /p Input="What would you like to do? (1-2) "
+if /i "%Input%"=="1" goto "Exit"
+if /i "%Input%"=="2" goto "Reboot"
+echo Invalid syntax!
+goto "Done"
+
+:"Exit"
 endlocal
+exit
+
+:"Reboot"
+endlocal
+echo.
+echo Please save everything you want before restarting this PC! Press any key to restart this PC.
+pause > nul 2>&1
+"%windir%\System32\wpeutil.exe" Reboot
 exit

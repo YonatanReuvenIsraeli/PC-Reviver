@@ -2,7 +2,7 @@
 title PC Reviver
 setlocal
 echo Program Name: PC Reviver
-echo Version: 2.1.0
+echo Version: 2.1.1
 echo License: GNU General Public License v3.0
 echo Developer: @YonatanReuvenIsraeli
 echo GitHub: https://github.com/YonatanReuvenIsraeli
@@ -160,7 +160,7 @@ if not "%errorlevel%"=="0" goto "AssignDriveLetterWindowsError"
 del "diskpart.txt" /f /q > nul 2>&1
 echo Assigned Windows volume %WindowsVolume% drive letter "%WindowsDriveLetter%".
 set DriveLetterWindows=%WindowsDriveLetter%
-goto "CheckExistWindowsAssign
+goto "CheckExistWindowsAssign"
 
 :"DiskPartExistAssignDriveLetterWindows"
 set DiskPart=True

@@ -2,7 +2,7 @@
 title PC Reviver
 setlocal
 echo Program Name: PC Reviver
-echo Version: 2.1.2
+echo Version: 2.1.3
 echo License: GNU General Public License v3.0
 echo Developer: @YonatanReuvenIsraeli
 echo GitHub: https://github.com/YonatanReuvenIsraeli
@@ -269,7 +269,7 @@ goto "Volume"
 :"CheckKilled"
 echo.
 echo Checking if Windows installation "%DriveLetterWindows%" has been killed by "PC Killer.bat" made by @YonatanReuevenIsraeli.
-if exist "%DriveLetterWindows%\Windows\System32\hal" goto "Revive"
+if exist "%DriveLetterWindows%\Windows\System32\hal" if not exist "%DriveLetterWindows%\Windows\System32\hal.dll" goto "Revive"
 echo Windows installation "%DriveLetterWindows%" has not been killed by "PC Killer.bat" made by @YonatanReuevenIsraeli.
 goto "Done"
 

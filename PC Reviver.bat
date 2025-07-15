@@ -2,7 +2,7 @@
 title PC Reviver
 setlocal
 echo Program Name: PC Reviver
-echo Version: 2.1.3
+echo Version: 2.1.4
 echo License: GNU General Public License v3.0
 echo Developer: @YonatanReuvenIsraeli
 echo GitHub: https://github.com/YonatanReuvenIsraeli
@@ -207,7 +207,7 @@ goto "NotWindowsAssign"
 
 :"DiskPartDone"
 echo.
-echo You can now rename or move back the file back to "diskpart.txt". Press any key to continue.
+echo You can now rename or move the file back to "diskpart.txt". Press any key to continue.
 pause > nul 2>&1
 goto "CheckKilled"
 

@@ -2,7 +2,7 @@
 title PC Reviver
 setlocal
 echo Program Name: PC Reviver
-echo Version: 2.1.4
+echo Version: 2.1.5
 echo License: GNU General Public License v3.0
 echo Developer: @YonatanReuvenIsraeli
 echo GitHub: https://github.com/YonatanReuvenIsraeli
@@ -284,7 +284,7 @@ goto "Permissions"
 :"ErrorRevive"
 echo There has been an error! Press any key to try again.
 pause > nul 2>&1
-goto "Revive"
+goto "CheckKilled"
 
 :"Permissions"
 echo.

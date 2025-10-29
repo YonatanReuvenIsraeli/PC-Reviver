@@ -1,4 +1,4 @@
-# PC Reviver v2.1.6
+# PC Reviver v2.1.7
 Revive a PC killed by "PC Killer.bat" made by @YonatanReuvenIsraeli.
 
 ## Notes

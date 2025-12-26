@@ -32,7 +32,7 @@ echo.
 echo Listing volumes attached to this PC.
 (echo list vol) > "diskpart.txt"
 (echo exit) >> "diskpart.txt"
-"%windir%\System32\diskpart.exe" /s "diskpart.txt" 2>&1
+"%windir%\System32\diskpart.exe" /s "diskpart.txt"
 if not "%errorlevel%"=="0" goto "VolumeError"
 del "diskpart.txt" /f /q > nul 2>&1
 echo Volumes attached to this PC listed.

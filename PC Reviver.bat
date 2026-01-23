@@ -2,7 +2,7 @@
 title PC Reviver
 setlocal
 echo Program Name: PC Reviver
-echo Version: 2.1.8
+echo Version: 2.1.10
 echo License: GNU General Public License v3.0
 echo Developer: @YonatanReuvenIsraeli
 echo GitHub: https://github.com/YonatanReuvenIsraeli
@@ -23,7 +23,7 @@ set Kill=
 set /p Kill="This batch file only revives PCs killed by "PC Killer.bat" made by @YonatanReuvenIsraeli. Has your PC been killed by "PC Killer.bat" made by @YonatanReuvenIsraeli? (Yes/No) "
 if /i "%Kill%"=="Yes" goto "Volume"
 if /i "%Kill%"=="No" goto "Close"
-echo Invalid syntax
+echo Invalid syntax!
 goto "Start"
 
 :"Volume"

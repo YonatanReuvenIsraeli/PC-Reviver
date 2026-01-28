@@ -2,18 +2,18 @@
 title PC Reviver
 setlocal
 echo Program Name: PC Reviver
-echo Version: 2.1.10
+echo Version: 2.1.11
 echo License: GNU General Public License v3.0
 echo Developer: @YonatanReuvenIsraeli
 echo GitHub: https://github.com/YonatanReuvenIsraeli
 echo Sponsor: https://github.com/sponsors/YonatanReuvenIsraeli
-"%windir%\System32\net.exe" user > nul 2>&1
-if "%errorlevel%"=="0" goto "NotInWindowsPreinstallationEnvironmentWindowsRecoveryEnvironment"
+"%windir%\System32\net.exe" session > nul 2>&1
+if not "%errorlevel%"=="0" goto "NotAdministrator"
 goto "Start"
 
-:"NotInWindowsPreinstallationEnvironmentWindowsRecoveryEnvironment"
+:"NotAdministrator"
 echo.
-echo You are not in Windows Preinstallation Environment or Windows Recovery Environment! You must run this batch file in Windows Preinstallation Environment or Windows Recovery Environment. Press any key to close this batch file.
+echo Please run this batch file as an administrator. Press any key to close this batch file.
 pause > nul 2>&1
 goto "Exit"
 
@@ -177,6 +177,7 @@ goto "WindowsDriveLetter"
 
 :"CheckExistWindowsAssign"
 if not exist "%DriveLetterWindows%\Windows" goto "NotWindowsAssign"
+if /i "%DriveLetterWindows%"=="%SystemDrive%" goto "IsOnlineAssign"
 if /i "%DiskPart%"=="True" goto "DiskPartDone"
 goto "CheckKilled"
 
@@ -204,6 +205,31 @@ del "diskpart.txt" /f /q > nul 2>&1
 echo There has been an error! Press any key to try again.
 pause > nul 2>&1
 goto "NotWindowsAssign"
+
+:"IsOnlineAssign"
+if exist "diskpart.txt" goto "DiskPartExistIsOnlineAssign"
+echo.
+echo "%DriveLetterWindows%" is an online Windows installation! Removing drive letter "%DriveLetterWindows%" from volume %WindowsVolume%.
+(echo sel vol %WindowsVolume%) > "diskpart.txt"
+(echo remove letter=%DriveLetterWindows%) >> "diskpart.txt"
+(echo exit) >> "diskpart.txt"
+"%windir%\System32\diskpart.exe" /s "diskpart.txt" > nul 2>&1
+if not "%errorlevel%"=="0" goto "IsOnlineAssignError"
+del "diskpart.txt" /f /q > nul 2>&1
+echo Removed drive letter "%DriveLetterWindows%" from volume %WindowsVolume%. Please try again.
+goto "Volume"
+
+:"DiskPartExistIsOnlineAssign"
+set DiskPart=True
+echo Please temporarily rename to something else or temporarily move to another location "diskpart.txt" in order for this batch file to proceed. "diskpart.txt" is not a system file. "diskpart.txt" is located in the folder "%cd%". Press any key to continue when "diskpart.txt" is renamed to something else or moved to another location. This batch file will let you know when you can rename it back to its original name or move it back to its original location.
+pause > nul 2>&1
+goto "IsOnlineAssign"
+
+:"IsOnlineAssignError"
+del "diskpart.txt" /f /q > nul 2>&1
+echo There has been an error! Press any key to try again.
+pause > nul 2>&1
+goto "IsOnlineAssign"
 
 :"DiskPartDone"
 echo.
@@ -256,6 +282,7 @@ goto "SureDriveLetterWindows"
 :"CheckExistDriveLetterWindows"
 if not exist "%DriveLetterWindows%" goto "DriveLetterWindowsNotExist"
 if not exist "%DriveLetterWindows%\Windows" goto "NotWindows"
+if /i "%DriveLetterWindows%"=="%SystemDrive%" goto "IsOnline"
 goto "CheckKilled"
 
 :"DriveLetterWindowsNotExist"
@@ -263,7 +290,11 @@ echo "%DriveLetterWindows%" does not exist! Please try again.
 goto "Volume"
 
 :"NotWindows"
-echo Windows not installed on "%DriveLetterWindows%"!
+echo Windows not installed on "%DriveLetterWindows%"! Please try again.
+goto "Volume"
+
+:"IsOnline"
+echo "%DriveLetterWindows%" is an online Windows installation! Please try again.
 goto "Volume"
 
 :"CheckKilled"

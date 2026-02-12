@@ -2,13 +2,16 @@
 title PC Reviver
 setlocal
 echo Program Name: PC Reviver
-echo Version: 2.1.13
+echo Version: 2.1.14
 echo License: GNU General Public License v3.0
 echo Developer: @YonatanReuvenIsraeli
 echo GitHub: https://github.com/YonatanReuvenIsraeli
 echo Sponsor: https://github.com/sponsors/YonatanReuvenIsraeli
 "%windir%\System32\net.exe" session > nul 2>&1
 if not "%errorlevel%"=="0" goto "NotAdministrator"
+"%windir%\System32\net.exe" user > nul 2>&1
+if "%errorlevel%"=="0" set PERE=False
+if not "%errorlevel%"=="0" set PERE=True
 goto "Start"
 
 :"NotAdministrator"
@@ -276,7 +279,8 @@ echo.
 echo Checking if Windows installation "%DriveLetterWindows%" has been killed by "PC Killer.bat" made by @YonatanReuvenIsraeli.
 if exist "%DriveLetterWindows%\Windows\System32\hal" if not exist "%DriveLetterWindows%\Windows\System32\hal.dll" goto "Revive"
 echo Windows installation "%DriveLetterWindows%" has not been killed by "PC Killer.bat" made by @YonatanReuvenIsraeli.
-goto "Done"
+if /i "%PERE%"=="False" goto "Done"
+if /i "%PERE%"=="True" goto "PEREDone"
 
 :"Revive"
 echo Windows installation "%DriveLetterWindows%" has been killed by "PC Killer.bat" made by @YonatanReuvenIsraeli.
@@ -301,7 +305,8 @@ if not "%errorlevel%"=="0" goto "ErrorPermissions"
 echo User permissions reset.
 echo.
 echo PC revived!
-goto "Done"
+if /i "%PERE%"=="False" goto "Done"
+if /i "%PERE%"=="True" goto "PEREDone"
 
 :"ErrorPermissions"
 echo There has been an error! Press any key to try again.
@@ -309,6 +314,12 @@ pause > nul 2>&1
 goto "Permissions"
 
 :"Done"
+echo.
+echo Press any key to close this batch file.
+pause > nul 2>&1
+goto "Exit"
+
+:"PEREDone"
 echo.
 echo [1] Exit.
 echo [2] Reboot.
@@ -318,7 +329,7 @@ set /p Input="What would you like to do? (1-2) "
 if /i "%Input%"=="1" goto "Exit"
 if /i "%Input%"=="2" goto "Reboot"
 echo Invalid syntax!
-goto "Done"
+goto "PEREDone"
 
 :"Exit"
 endlocal

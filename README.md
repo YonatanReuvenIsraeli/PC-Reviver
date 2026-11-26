@@ -1,4 +1,4 @@
-# PC Reviver v2.1.15
+# PC Reviver v2.1.16
 Revive a PC killed by "PC Killer.bat" made by @YonatanReuvenIsraeli.
 
 ## Supports offline Windows installations only!

@@ -2,7 +2,7 @@
 title PC Reviver
 setlocal
 echo Program Name: PC Reviver
-echo Version: 2.1.14
+echo Version: 2.1.15
 echo License: GNU General Public License v3.0
 echo Developer: @YonatanReuvenIsraeli
 echo GitHub: https://github.com/YonatanReuvenIsraeli
@@ -300,8 +300,9 @@ echo.
 echo Resetting user permissions.
 "%windir%\System32\icacls.exe" "%DriveLetterWindows%\Windows\System32\hal.dll" /setowner "NT SERVICE\TrustedInstaller" > nul 2>&1
 if not "%errorlevel%"=="0" goto "ErrorPermissions"
-"%windir%\System32\icacls.exe" "%DriveLetterWindows%\Windows\System32\hal.dll" /reset > nul 2>&1
+"%windir%\System32\icacls.exe" "%windir%\System32" /restore "%DriveLetterWindows%\Windows\System32\halPermissions.txt" > nul 2>&1
 if not "%errorlevel%"=="0" goto "ErrorPermissions"
+del "%DriveLetterWindows%\Windows\System32\halPermissions.txt" /f /q > nul 2>&1
 echo User permissions reset.
 echo.
 echo PC revived!
